@@ -138,3 +138,20 @@ Noted points
 
 */
 
+select * from users;
+
+alter table posts
+    add column created_at date
+default now() - (random() * interval '100 days');  
+
+-- feed
+
+select p.created_at, p.title,
+       substr(p.body, 1, 30), u.first_name
+from posts p
+inner join users u on p."creatorId" = u.id
+where created_at < '2019-12-02' 
+order by created_at desc
+limit 20;
+
+-- posts
