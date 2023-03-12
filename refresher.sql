@@ -80,3 +80,61 @@ from comments c
 inner join posts p on c.post_id = p.id
 inner join users u on p."creatorId" = u.id
 inner join users u2 on c.creator_id = u2.id;
+
+
+-- favorites/upvotes/likes
+-- user - post
+-- many to many relationship
+
+-- join table
+
+create table favorites(
+    user_id int references users(id),
+    post_id int references posts(id),
+    primary key (user_id, post_id) -- composite key
+);
+
+select * from users;
+select * from posts;
+
+insert into favorites
+(user_id, post_id)
+values (2, 11)
+
+select * from favorites;
+
+-- friend
+-- user - user
+-- many to many
+-- elijah -> obara
+
+create table friends (
+    user_id1 int references users(id),
+    user_id2 int references users(id),
+    primary key (user_id1, user_id2)
+);
+
+insert into friends 
+    (user_id1, user_id2)
+    values (1, 2);
+
+select * from  friends;
+
+/*
+Noted points
+ 1. create a table for each thing(everything that matters) i.e 
+    - user
+    - post
+    - comment
+    - feed
+    - likes
+ 2. setup relationships
+    - m to n (many users to many posts)
+        - join table with foreign keys
+    - 1 to m (one user maps to many posts)
+        - foreign key
+    - 1 to 1 (profile for a user)
+        - usually collapse into a single table
+
+*/
+
