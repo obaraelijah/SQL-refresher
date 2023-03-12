@@ -53,3 +53,30 @@ select u.id user_id, p.id post_id,
 first_name, title from users u
 inner join posts p on u.id = p."creatorId"
 where p.title ilike '%my%Post%' and u.id = 1;
+
+-- 1 single user
+-- 2 posts
+-- x * (y, z) = (x, y), (x, z)
+
+-- 1 to many with posts
+-- 1 to many with users
+create table comments (
+    id serial primary key,
+    message text not null,
+    post_id int references posts(id),
+    creator_id int references users(id)
+);
+
+select * from posts;
+
+insert into comments
+(message, post_id, creator_id)
+values ('hello, nice post!', 2, 4);
+
+select c.message, p.title,
+u.id user_id_for_post,
+u2.id user_id_for_comment
+from comments c
+inner join posts p on c.post_id = p.id
+inner join users u on p."creatorId" = u.id
+inner join users u2 on c.creator_id = u2.id;
